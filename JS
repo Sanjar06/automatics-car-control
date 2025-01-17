@@ -1,0 +1,35 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const statusDisplay = document.getElementById("status");
+
+  const sendCommand = (command) => {
+    // Simulate sending a command to the car
+    statusDisplay.textContent = `Sending command: ${command}`;
+    
+    // Example of an HTTP request to a server
+    fetch("https://your-server-endpoint.com/command", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ command }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok");
+      })
+      .then((data) => {
+        statusDisplay.textContent = `Car Status: ${data.status}`;
+      })
+      .catch((error) => {
+        statusDisplay.textContent = `Error: ${error.message}`;
+      });
+  };
+
+  document.getElementById("forward").addEventListener("click", () => sendCommand("forward"));
+  document.getElementById("left").addEventListener("click", () => sendCommand("left"));
+  document.getElementById("stop").addEventListener("click", () => sendCommand("stop"));
+  document.getElementById("right").addEventListener("click", () => sendCommand("right"));
+  document.getElementById("reverse").addEventListener("click", () => sendCommand("reverse"));
+});
